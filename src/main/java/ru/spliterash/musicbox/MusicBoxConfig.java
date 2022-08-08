@@ -23,6 +23,7 @@ public class MusicBoxConfig {
     private EconomySetting economy;
     private BossBarSetting bossbar;
     private HoloSetting holo;
+    private SignSetting signRadius;
     private int speakerRadius;
     private int jukeboxRadius;
     private String lang;
@@ -51,5 +52,12 @@ public class MusicBoxConfig {
     public static class EconomySetting {
         private boolean enable;
         private double price;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class SignSetting {
+        private int def;
+        private int max;
     }
 }

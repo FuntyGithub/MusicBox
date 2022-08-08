@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import ru.spliterash.musicbox.Lang;
+import ru.spliterash.musicbox.MusicBox;
 import ru.spliterash.musicbox.customPlayers.interfaces.PlayerSongPlayer;
 import ru.spliterash.musicbox.customPlayers.objects.SignPlayer;
 import ru.spliterash.musicbox.customPlayers.playlist.ListPlaylist;
@@ -515,16 +516,20 @@ public class GUIActions {
         sign.setLine(1, SignPlayer.SIGN_SECOND_LINE);
         String range = sign.getLine(2);
         if (range.isEmpty())
-            range = "24";
+            range = String.valueOf(MusicBox.getInstance().getConfigObject().getSignRadius().getDef());
         else {
             try {
                 int rangeInt = Integer.parseInt(range);
-                if (rangeInt > 256) {
-                    rangeInt = 256;
+                int maxRange = MusicBox.getInstance().getConfigObject().getSignRadius().getMax();
+                if (maxRange > 257) {
+                    maxRange = 256;
+                }
+                if (rangeInt > maxRange) {
+                    rangeInt = maxRange;
                 }
                 range = String.valueOf(rangeInt);
             } catch (Exception ex) {
-                range = "24";
+                range = String.valueOf(MusicBox.getInstance().getConfigObject().getSignRadius().getDef());
             }
         }
         sign.setLine(2, ChatColor.RED + range);

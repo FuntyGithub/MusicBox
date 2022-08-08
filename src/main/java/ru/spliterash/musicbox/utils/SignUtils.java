@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import ru.spliterash.musicbox.Lang;
+import ru.spliterash.musicbox.MusicBox;
 import ru.spliterash.musicbox.customPlayers.interfaces.IPlayList;
 import ru.spliterash.musicbox.customPlayers.playlist.ListPlaylist;
 import ru.spliterash.musicbox.song.MusicBoxSongManager;
@@ -34,10 +35,14 @@ public class SignUtils {
         int range;
         try {
             range = Integer.parseInt(ChatColor.stripColor(sign.getLine(2)));
-            if (range > 256)
-                range = 256;
+            int maxRange = MusicBox.getInstance().getConfigObject().getSignRadius().getMax();
+            if (maxRange > 257) {
+                maxRange = 256;
+            }
+            if (range > maxRange)
+                range = maxRange;
         } catch (Exception exception) {
-            range = 24;
+            range = MusicBox.getInstance().getConfigObject().getSignRadius().getDef();
         }
         return range;
     }

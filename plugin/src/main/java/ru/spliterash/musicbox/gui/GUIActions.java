@@ -299,7 +299,7 @@ public class GUIActions {
             player.getInventory().setItemInMainHand(musicBoxSong.getSongStack(XMaterial.matchXMaterial(player.getInventory().getItemInMainHand().getType())));
             player.sendMessage(Lang.DISC_BUYED.toString("{disc}", musicBoxSong.getName()));
 
-        } else player.sendMessage("§6Du musst eine Schallplatte in deiner Hand halten!");
+        } else player.sendMessage(Lang.NO_HOLDING_DISC.toString());
 
 //        if (EconomyUtils.canBuy(player, price)) {
 //            HashMap<Integer, ItemStack> result = player.getInventory().addItem(musicBoxSong.getSongStack());

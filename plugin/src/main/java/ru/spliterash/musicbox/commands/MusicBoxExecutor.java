@@ -37,14 +37,12 @@ public class MusicBoxExecutor implements TabExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("musicbox.use")) {
-            sender.sendMessage(Lang.NO_PEX.toString());
-            return true;
-        }
 
         if (args.length == 0) {
             if (sender instanceof Player)
-                GUIActions.openDefaultInventory(PlayerWrapper.getInstance((Player) sender));
+                if (sender.hasPermission("musicbox.use")) {
+                    GUIActions.openDefaultInventory(PlayerWrapper.getInstance((Player) sender));
+                } else sender.sendMessage(Lang.NO_PEX.toString());
             else
                 sendHelp(sender);
             return true;

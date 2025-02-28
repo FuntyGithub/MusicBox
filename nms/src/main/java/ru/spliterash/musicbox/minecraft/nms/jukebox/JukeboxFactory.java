@@ -14,7 +14,21 @@ public class JukeboxFactory {
         int iV = NMSUtils.parseMajorVersion(raw);
 
         String className;
-        if (iV == 20) {
+        if (iV == 21) {
+            switch (raw) {
+                case "1.21":
+                case "1.21.1":
+                    className = START_PATH + "V21";
+                    break;
+                case "1.21.2":
+                case "1.21.3":
+                    className = START_PATH + "V21_2";
+                    break;
+                default:
+                    className = null;
+                    break;
+            }
+        } else if (iV == 20) {
             switch (raw) {
                 case "1.20":
                 case "1.20.1":
@@ -23,8 +37,14 @@ public class JukeboxFactory {
                 case "1.20.2":
                     className = START_PATH + "V20_2";
                     break;
+                case "1.20.3":
+                case "1.20.4":
+                    className = START_PATH + "V20_3";
+                    break;
+                case "1.20.5":
+                case "1.20.6":
                 default:
-                    className = null;
+                    className = START_PATH + "V20_5";
                     break;
             }
         } else if (iV == 19) {
@@ -55,13 +75,19 @@ public class JukeboxFactory {
 
         if (className == null)
             throw new IllegalArgumentException("Unsupported version: " + raw);
-
+        Class<? extends IJukebox> tmpClass = null;
         try {
             //noinspection unchecked
-            clazz = (Class<? extends IJukebox>) Class.forName(className);
+            tmpClass = (Class<? extends IJukebox>) Class.forName(className);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        } finally {
+            clazz = tmpClass;
         }
+    }
+
+    public static boolean jukeboxAvailable() {
+        return clazz != null;
     }
 
     public static IJukebox getJukebox(Jukebox jukebox) {

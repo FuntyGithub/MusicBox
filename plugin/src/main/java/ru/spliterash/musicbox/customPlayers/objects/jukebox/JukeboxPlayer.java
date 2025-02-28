@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import ru.spliterash.musicbox.Lang;
 import ru.spliterash.musicbox.MusicBox;
 import ru.spliterash.musicbox.customPlayers.abstracts.AbstractBlockPlayer;
 import ru.spliterash.musicbox.customPlayers.interfaces.IPlayList;
@@ -43,16 +44,17 @@ public class JukeboxPlayer extends AbstractBlockPlayer {
             return;
         MusicBoxSong song = MusicBoxSongManager.findByItem(clickedItem).orElse(null);
         if (song == null) {
-            if (MusicBoxSongManager.tryReplaceLegacyItem(e.getPlayer(), clickedItem))
-                e.setCancelled(true);
             return;
         }
+        if (JukeboxFactory.jukeboxAvailable()) {
+            e.setCancelled(true);
+            e.getPlayer().getInventory().setItemInMainHand(null);
+            JukeboxFactory.getJukebox(jukebox).setJukebox(clickedItem);
 
-        e.setCancelled(true);
-        e.getPlayer().getInventory().setItemInMainHand(null);
-        JukeboxFactory.getJukebox(jukebox).setJukebox(clickedItem);
-
-        createNew(jukebox);
+            createNew(jukebox);
+        } else {
+            e.getPlayer().sendMessage(Lang.JUKEBOX_NOT_SUPPORTED.toString());
+        }
     }
 
     private static void createNew(Jukebox jukebox) {
@@ -86,7 +88,7 @@ public class JukeboxPlayer extends AbstractBlockPlayer {
             JukeboxPlayer player = AbstractBlockPlayer.findByLocation(box.getLocation());
             if (player != null) {
                 player.getMusicBoxModel().startNext();
-            } else
+            } else if (JukeboxFactory.jukeboxAvailable())
                 createNew(box);
         }
     }

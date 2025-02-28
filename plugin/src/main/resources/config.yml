@@ -24,19 +24,9 @@ bossbar:
   enable: true
   color: GREEN
   style: SEGMENTED_20
-
-# Hologram settings above the player in column mode
-# Настройки голограммы над игроком в режиме колонки
 # Language setting
 # Настройки языка, есть ru и en
 lang: en
-holo:
-  # Enable or disable hologram(change requires server restart, not /musicbox reload)
-  # Включает или выключает голограммы(для изменения нужно перезапустить сервер, а не просто перезагрузить плагин)
-  enable: true
-  # How high will the hologram be
-  # Как высоко будет надпись над игроком
-  height: 1.30
 # Radius in which disc's will be heard from this plugin
 # Как далеко будет слышно пластинки из этого плагина
 jukeboxRadius: 64
@@ -55,3 +45,6 @@ autoDestroy: 60
 # Whether it is necessary to check the pex of musicbox.hear. By default, it is not checked and everyone can hear music
 # but if you need it, then set to true and now no one can hear music without this pex
 hearPermissionsCheck: false
+# Enables support for octaves outside minecraft's default 2, which requires a resource pack to hear.
+# If false, notes outisde of the octave range are automatically transposed into it
+enable10octave: false

@@ -3,6 +3,7 @@ package ru.spliterash.musicbox.gui;
 import com.cryptomorin.xseries.XMaterial;
 import lombok.experimental.UtilityClass;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,7 @@ import ru.spliterash.musicbox.song.MusicBoxSongManager;
 import ru.spliterash.musicbox.song.songContainers.containers.SingletonContainer;
 import ru.spliterash.musicbox.song.songContainers.types.FullSongContainer;
 import ru.spliterash.musicbox.song.songContainers.types.SongContainer;
+import ru.spliterash.musicbox.utils.BukkitUtils;
 import ru.spliterash.musicbox.utils.EconomyUtils;
 import ru.spliterash.musicbox.utils.ItemUtils;
 
@@ -78,8 +80,8 @@ public class GUIActions {
                     .builder()
                     .onSongLeftClick(GUIActions::playerBuyMusic)
                     .extraSongLore(GUIActions::playerBuySongLore)
-                    .extraContainerLore(GUIActions::playerBuyAllContainerLore)
-                    .onContainerRightClick(GUIActions::buyAllContainer)
+//                    .extraContainerLore(GUIActions::playerBuyAllContainerLore)
+//                    .onContainerRightClick(GUIActions::buyAllContainer)
                     .build();
         }
         // Получение пластинок
@@ -300,15 +302,23 @@ public class GUIActions {
     public void playerBuyMusic(PlayerWrapper wrapper, MusicBoxSong musicBoxSong) {
         double price = EconomyUtils.getDiscPrice();
         Player player = wrapper.getPlayer();
-        if (EconomyUtils.canBuy(player, price)) {
-            HashMap<Integer, ItemStack> result = player.getInventory().addItem(musicBoxSong.getSongStack());
-            if (result.size() > 0) {
-                player.sendMessage(Lang.NO_INVENTORY_SPACE.toString());
-            } else {
-                EconomyUtils.buyNoMessage(player, price);
-                player.sendMessage(Lang.DISC_BUYED.toString("{disc}", musicBoxSong.getName()));
-            }
-        }
+
+        if (player.getInventory().getItemInMainHand().getType().name().contains("MUSIC_DISC_")) {
+
+            player.getInventory().setItemInMainHand(musicBoxSong.getSongStack(XMaterial.matchXMaterial(player.getInventory().getItemInMainHand().getType())));
+            player.sendMessage(Lang.DISC_BUYED.toString("{disc}", musicBoxSong.getName()));
+
+        } else player.sendMessage(Lang.NO_HOLDING_DISC.toString());
+
+//        if (EconomyUtils.canBuy(player, price)) {
+//            HashMap<Integer, ItemStack> result = player.getInventory().addItem(musicBoxSong.getSongStack());
+//            if (result.size() > 0) {
+//                player.sendMessage(Lang.NO_INVENTORY_SPACE.toString());
+//            } else {
+//                EconomyUtils.buyNoMessage(player, price);
+//                player.sendMessage(Lang.DISC_BUYED.toString("{disc}", musicBoxSong.getName()));
+//            }
+//        }
     }
 
     public List<String> playerBuyAllContainerLore(SongContainerGUI.SongGUIData<FullSongContainer> containerData) {
@@ -365,7 +375,7 @@ public class GUIActions {
 
     public void giveDisc(PlayerWrapper wrapper, MusicBoxSong song) {
         Player player = wrapper.getPlayer();
-        player.getInventory().addItem(song.getSongStack());
+        player.getInventory().addItem(song.getSongStack(BukkitUtils.getRandomDisc()));
         player.sendMessage(Lang.YOU_GET_DISC.toString("{disc}", song.getName()));
     }
 

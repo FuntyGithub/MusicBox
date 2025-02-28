@@ -155,6 +155,9 @@ public enum Lang {
                     "&eНажми &cправой кнопкой&e чтобы купить весь этот сундук",
                     "&7Цена: &6{price} $"
             )),
+    NO_HOLDING_DISC(
+            "§6You must have a music disc in your hand!",
+            "&6У вас в руках должен быть музыкальный диск!"),
     NO_HAS_MONEY(
             "&6You don't have enough &b{amount}&6 to buy this",
             "&6Вам не хватает &b{amount}&6 чтобы купить это"),

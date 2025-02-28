@@ -52,4 +52,11 @@ public class MusicBoxConfig {
         private int def;
         private int max;
     }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class SignSetting {
+        private int def;
+        private int max;
+    }
 }
